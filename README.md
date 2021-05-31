@@ -4,7 +4,7 @@ This data warehouse has been set up to support easy-to-use optimized queries and
 
 ## Staging Tables (2)
 staging_events : keys={artist, auth, firstname, gender, iteminsession, lastname, length, level, location, method, 
-                       page, registration, sessionid, song, status, ts, useragent, userid}
+                       page, registration, sessionid, song, status, ts, useragent, userid}\
 staging_songs : keys={artist_id, artist_latitude, artist_location, artist_longitude, artist_name, duration, 
                       num_songs, song_id, title, year}
 
@@ -12,17 +12,17 @@ staging_songs : keys={artist_id, artist_latitude, artist_location, artist_longit
 fact_songplay : keys={songplay_id, start_time, user_id, level, song_id, artist_id, session_id, location, user_agent}
 
 ## Dimension Tables (4) 
-dim_users : keys={user_id, first_name, last_name, gender, level}
-dim_songs : keys={song_id, title, artist_id, year, duration}
-dim_artists : keys={artist_id, name, location, latitude, longitude}
+dim_users : keys={user_id, first_name, last_name, gender, level}\
+dim_songs : keys={song_id, title, artist_id, year, duration}\
+dim_artists : keys={artist_id, name, location, latitude, longitude}\
 dim_time : keys={start_time, hour, day, week, month, year, weekday}
 
 The justification for staging in this manner is that it takes the data/metadata for song and user activity exactly as generated and logged by existing Sparkify business processes and provides an intermediate Redshift storage point from which further transformation can be performed to generate fact and dimension tables more suitable for analytical queries. 
 
 The justifications for the choice of a star schema for the analytical queries include:
 
-a) Being denormalized, the join logic required for queries is much simpler than with a normalized schema.
-b) Simplified reporting logic for queries of business interest.
+a) Being denormalized, the join logic required for queries is much simpler than with a normalized schema.\
+b) Simplified reporting logic for queries of business interest.\
 c) Optimized query performance (especially for aggregations).
 
 
@@ -33,9 +33,8 @@ c) Optimized query performance (especially for aggregations).
              IAM_ROLE (ARN), and S3 bucket containing the JSON log
              data and path information (LOG_DATA, LOG_JSON_PATH, SONG_DATA)
              
-             (NOTE: the S3 variables are populated in this file, but the
-              Redshift cluster variables and ARN must be generated on AWS and 
-              added to the file)
+(*NOTE: the S3 variables are populated in this file, but the Redshift cluster variables 
+  and ARN must be generated on AWS and added to the file*)
 
 
 2) sql_queries.py : Contains definition strings for the AWS Redshift queries to: 
@@ -59,12 +58,12 @@ c) Optimized query performance (especially for aggregations).
 
 1) Drop any existing tables and create new (empty) tables:
 
-From the terminal (in the directory containing the Python scripts), type: python create_tables.py
+From the terminal (in the directory containing the Python scripts), type: `python create_tables.py`
 
-(NOTE: This script imports sql_queries.py and dwh.cfg, which must be in the same directory)
+(*NOTE: This script imports sql_queries.py and dwh.cfg, which must be in the same directory*)
 
 2) Extract the JSON files from S3 into staging tables, Transform and Load staged data into the Fact and Dimension Tables:
 
-From the terminal, type: python etl.py
+From the terminal, type: `python etl.py`
 
-(NOTE: This script also imports sql_queries.py and dw.cfg, which must be in the same directory)
+(*NOTE: This script also imports sql_queries.py and dw.cfg, which must be in the same directory*)
